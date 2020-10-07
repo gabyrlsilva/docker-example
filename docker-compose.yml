@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+    app:
+        #regras do NodeJs
+        build: 
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - 3000:3000
+        environment: 
+            - MYSQL_HOST=mysql
+            - MYSQL_USER=root
+            - MYSQL_PASSWORD=secret
+            - MYSQL_DB=todos
+        volumes: 
+            - ./:/app
+        depends_on: 
+            - mysql
+        restart: always
+
+    mysql:
+        #regra do MYSQL
+        image: mysql:5.7
+        volumes:
+            - todo-mysql-data:/var/lib/mysql
+        environment: 
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: todos
+        restart: always
+          
+volumes:
+    todo-mysql-data:
